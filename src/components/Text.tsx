@@ -5,6 +5,12 @@ type TextProps<C extends React.ElementType> = {
   children: React.ReactNode;
 } & React.ComponentPropsWithoutRef<C>;
 
+// ElementType은 html element 일 때는 html element, 커스텀 컴포넌트일 경우에는 그것을 지원한다.
+// type ElementType<P = any> ={
+//     [K in keyof JSX.IntrinsicElements]: P extends JSX.IntrinsicElements[K] ? K : never
+// }[keyof JSX.IntrinsicElements] |
+// ComponentType<P>;
+
 export const Text = <C extends React.ElementType = "span">({
   as,
   children,
