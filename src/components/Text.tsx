@@ -8,9 +8,11 @@ type TextProps<C extends React.ElementType> = {
 export const Text = <C extends React.ElementType>({
   as,
   children,
+  ...restProps
 }: TextProps<C>) => {
   const Component = as || "span";
-  return <Component>{children}</Component>;
+
+  return <Component {...restProps}>{children}</Component>;
 };
 
 // <Text as="">hello world</Text>
