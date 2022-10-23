@@ -5,7 +5,7 @@ type TextProps<C extends React.ElementType> = {
   children: React.ReactNode;
 } & React.ComponentPropsWithoutRef<C>;
 
-export const Text = <C extends React.ElementType>({
+export const Text = <C extends React.ElementType = "span">({
   as,
   children,
   ...restProps
