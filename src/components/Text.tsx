@@ -9,15 +9,22 @@ type Colors =
   | "indigo"
   | "violet";
 
-type TextProps<C extends React.ElementType> = {
+type AsProp<C extends React.ElementType> = {
   as?: C;
-  color?: Colors | "black";
 };
 
-type Props<C extends React.ElementType> = React.PropsWithChildren<
-  TextProps<C>
-> &
-  Omit<React.ComponentPropsWithoutRef<C>, keyof TextProps<C>>;
+type PropsToOmit<C extends React.ElementType, P> = keyof AsProp<C> & P;
+
+type PolymorphicComponentProps<
+  C extends React.ElementType,
+  Props = {}
+> = React.PropsWithChildren<Props & AsProp<C>> &
+  Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>> &
+  AsProp<C>;
+
+type TextProps = {
+  color?: Colors | "black";
+};
 
 // ElementType은 html element 일 때는 html element, 커스텀 컴포넌트일 경우에는 그것을 지원한다.
 // type ElementType<P = any> ={
@@ -31,7 +38,7 @@ export const Text = <C extends React.ElementType = "span">({
   style,
   children,
   ...restProps
-}: Props<C>) => {
+}: PolymorphicComponentProps<C, TextProps>) => {
   const Component = as || "span";
 
   //styled component와 같은 style을 고유한 classname으로 만들어주는 라이브러리를 사용
