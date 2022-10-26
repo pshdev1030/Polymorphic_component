@@ -8,6 +8,7 @@ type Props<C extends React.ElementType, P> = Omit<
 > &
   P &
   AsProp<C>;
+//COmponentPropsWithoutRef는 Props의 타입을 보장해주지 못함, 말그대로 ref만
 
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
@@ -18,12 +19,12 @@ type ColorType = RGB | RGBA | HEX;
 type VarientType =
   | "dotted"
   | "dashed"
-  | "solid "
+  | "solid"
   | "double"
   | "groove"
-  | "ridge "
-  | "inset "
-  | "outset "
+  | "ridge"
+  | "inset"
+  | "outset"
   | "none"
   | "hidden";
 
@@ -36,9 +37,9 @@ type BorderProps = {
 const Border = <C extends React.ElementType = "div">({
   as,
   style,
-  color,
-  width,
-  varient,
+  color = "#000",
+  width = 1,
+  varient = "solid",
   ...restProps
 }: Props<C, BorderProps>) => {
   const Component = as || "div";
