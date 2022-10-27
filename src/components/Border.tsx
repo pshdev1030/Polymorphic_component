@@ -8,6 +8,7 @@ type Props<C extends React.ElementType, P> = React.PropsWithChildren<
   Omit<React.ComponentPropsWithoutRef<C>, keyof P & AsProp<C>> &
   P &
   AsProp<C>;
+
 //type PropsWithChildren<P = unknown> = P & { children?: ReactNode | undefined };
 //ComponentPropsWithoutRef는 Props의 타입을 보장해주지 못함, 말그대로 ref만
 
@@ -60,4 +61,5 @@ const Border = forwardRef(
     return <Component {...restProps} style={styles} ref={ref}></Component>;
   }
 );
+
 export default Border;
