@@ -6,7 +6,7 @@ function App() {
   const ref = useRef<HTMLDivElement>(null);
   return (
     <div className="App">
-      <Border as="span" color="#ccc" varient="dashed">
+      <Border as="div" color="#ccc" variant="dashed" ref={ref}>
         asdf
       </Border>
       <Border as="div">asdf</Border>

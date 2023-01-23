@@ -1,14 +1,5 @@
 import React, { forwardRef } from "react";
 
-type AsProp<C extends React.ElementType> = { as?: C };
-
-type Props<C extends React.ElementType, P> = React.PropsWithChildren<
-  P & AsProp<C>
-> &
-  Omit<React.ComponentPropsWithoutRef<C>, keyof P & AsProp<C>> &
-  P &
-  AsProp<C>;
-
 //type PropsWithChildren<P = unknown> = P & { children?: ReactNode | undefined };
 //ComponentPropsWithoutRef는 Props의 타입을 보장해주지 못함, 말그대로 ref만
 
@@ -18,7 +9,7 @@ type HEX = `#${string}`;
 
 type ColorType = RGB | RGBA | HEX;
 
-type VarientType =
+type VariantType =
   | "dotted"
   | "dashed"
   | "solid"
@@ -33,30 +24,43 @@ type VarientType =
 type BorderProps = {
   color?: ColorType;
   width?: number;
-  varient?: VarientType;
+  variant?: VariantType;
 };
 
-type PolymorphicRef<C extends React.ElementType> =
-  React.ComponentPropsWithRef<C>["ref"];
+type AsProps<T extends React.ElementType> = {
+  as?: T;
+};
 
-const Border = forwardRef(
-  <C extends React.ElementType = "div">(
+type Props<T extends React.ElementType> = BorderProps &
+  Omit<React.ComponentPropsWithoutRef<T>, keyof BorderProps> &
+  AsProps<T>;
+
+type Ref<T extends React.ElementType> = React.ComponentPropsWithRef<T>["ref"];
+
+type BorderComponent = <T extends React.ElementType = "div">(
+  props: Props<T> & {
+    ref?: Ref<T>;
+  }
+) => React.ReactElement | null;
+
+const Border: BorderComponent = forwardRef(
+  <T extends React.ElementType = "div">(
     {
       as,
       style,
       color = "#000",
       width = 1,
-      varient = "solid",
+      variant = "solid",
       ...restProps
-    }: Props<C, BorderProps>,
-    ref?: PolymorphicRef<C>
+    }: Props<T>,
+    ref: Ref<T>
   ) => {
     const Component = as || "div";
     const styles = {
       ...style,
       borderColor: color,
       borderWidth: `${width}px`,
-      borderStyle: varient,
+      borderStyle: variant,
     };
     return <Component {...restProps} style={styles} ref={ref}></Component>;
   }
